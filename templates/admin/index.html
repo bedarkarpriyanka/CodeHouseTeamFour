@@ -35,5 +35,79 @@
     </div>
 
     <a class="btn btn-primary" href="/"><i class="icon-arrow-left icon-white"></i> Back</a>
+	
+<p></p><p></p>
+<div class="input-group margin">
+	<input type="text" class="form-control">
+	<span class="input-group-btn">
+		<button type="submit" class="btn btn-info btn-flat">Search</button>
+	</span>
 </div>
+<p></p><p></p>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" style="width:100%">
+  Post a question
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Post a question</h5>
+      </div>
+      <div class="modal-body">
+        <div class="box-body">
+          <form action="#" method="post">
+            <div class="form-group">
+              <input id="question_name" class="form-control" style="width: 100%" placeholder="Please fill out title">
+            </div>
+			<p></p>
+			<div class="form-group">
+				<select id="question_tag" class="selectpicker" style="width: 100%">
+				    <option value="1">Tag1</option>
+				    <option value="2">Tag2</option>
+				    <option value="3">Tag3</option>
+				    <option value="4">Tag4</option>
+				    <option value="5">Tag5</option>   
+					<option value="6">Tag6</option>         
+				</select>
+			</div>
+            <div>
+              <textarea id="question_description" class="textarea" placeholder="Please add description"
+                        style="width: 96%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </div>
+        	<button type="button" class="btn btn-secondary" data-dismiss="modal"> Cancel </button>
+        	<button id="post" type="button" class="btn btn-primary" style="float:right"> Post </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {% endblock body %}
+
+<script>
+	document.getElementById('post').addEventListener('click', function(e){
+		var name = document.getElementById('question_name').value;
+		var tag = document.getElementById('question_tag').value;
+		var description = document.getElementById('question_description').value;
+		var json = parseJson(name, tag, description);
+		$.ajax({
+		        type: "POST",
+		        url: '/post_question/' + json,
+		        complete : function(data) {
+		        	alert(json);
+				}
+		    });
+	})
+
+	function parseJson(name, tag, description) {
+		var json = {};
+		json['name'] = name;
+		json['tag'] = tag;
+		json['description'] = description;
+		return JSON.stringify(json);
+	}
+</script>
