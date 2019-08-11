@@ -1,12 +1,13 @@
 import os
 from flask import Flask, url_for, redirect, render_template, request
-from flask_sqlalchemy import SQLAlchemy
+from flask_mongoengine.wtf import model_form
+from flask_mongoengine import MongoEngine
 from wtforms import form, fields, validators
 import flask_admin as admin
 import flask_login as login
-from flask_admin.contrib import sqla
 from flask_admin import helpers, expose
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_admin.contrib.mongoengine import ModelView
 import string
 import random
 import datetime
@@ -14,23 +15,20 @@ import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123456790'
-app.config['DATABASE_FILE'] = 'sample_db.sqlite'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + app.config['DATABASE_FILE']
-app.config['SQLALCHEMY_ECHO'] = True
-db = SQLAlchemy(app)
+app.config['MONGODB_SETTINGS'] = {'db': 'test'}
+db = MongoEngine(app)
 
 app.static_folder = 'static'
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    login = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120))
-    password = db.Column(db.String(64))
-    status = db.Column(db.String(30))
-    org_name = db.Column(db.String(100))
-    interest = db.Column(db.String(100))
+class User(db.Document):
+    first_name = db.StringField(required=True, max_length=50)
+    last_name = db.StringField(required=True, max_length=50)
+    login = db.StringField(required=True, max_length=80, unique=True)
+    email = db.StringField(required=True, max_length=100)
+    password = db.StringField(required=True, max_length=64)
+    status = db.StringField(required=True, max_length=30)
+    org_name = db.StringField(required=True, max_length=100)
+    interest = db.StringField(required=True, max_length=100)
 
     @property
     def is_authenticated(self):
@@ -45,12 +43,27 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        return self.id
+        return str(self.id)
 
+    # Required for administrative interface
     def __unicode__(self):
-        return self.username
+        return self.login
 
 
+class Question(db.Document):
+    q_created_at = db.StringField(required=True, max_length=10)
+    q_upvotes = db.IntField(required=True)
+    q_string = db.StringField(required=True, max_length=4096)
+    q_tags = db.ListField(db.StringField(max_length=300))
+    q_user = db.ReferenceField(User)
+
+
+class Answer(db.Document):
+    a_created_at = db.StringField(required=True, max_length=10)
+    a_upvotes = db.IntField(required=True, max_length=100)
+    a_string = db.StringField(required=True, max_length=4096)
+    a_user = db.ReferenceField(User)
+    a_question = db.ReferenceField(Question)
 
 
 class LoginForm(form.Form):
@@ -60,10 +73,10 @@ class LoginForm(form.Form):
         user = self.get_user()
         if user is None:
             raise validators.ValidationError('Invalid user')
-        if not check_password_hash(user.password, self.password.data):
+        if user.password != self.password.data:
             raise validators.ValidationError('Invalid password')
     def get_user(self):
-        return db.session.query(User).filter_by(login=self.login.data).first()
+        return User.objects(login=self.login.data).first()
 
 
 class RegistrationForm(form.Form):
@@ -78,7 +91,7 @@ class RegistrationForm(form.Form):
     interest = fields.StringField(validators=[validators.required()])
     password = fields.PasswordField(validators=[validators.required()])
     def validate_login(self, field):
-        if db.session.query(User).filter_by(login=self.login.data).count() > 0:
+        if User.objects(login=self.login.data):
             raise validators.ValidationError('Duplicate username')
 
 
@@ -88,10 +101,10 @@ def init_login():
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(user_id):
-        return db.session.query(User).get(user_id)
+        return User.objects(id=user_id).first()
 
 
-class MyModelView(sqla.ModelView):
+class MyModelView(ModelView):
     def is_accessible(self):
         return login.current_user.is_authenticated
 
@@ -122,9 +135,8 @@ class MyAdminIndexView(admin.AdminIndexView):
         if helpers.validate_form_on_submit(form):
             user = User()
             form.populate_obj(user)
-            user.password = generate_password_hash(form.password.data)
-            db.session.add(user)
-            db.session.commit()
+            user.password = form.password.data
+            user.save()
             login.login_user(user)
             return redirect(url_for('.index'))
         link = '<p>Already have an account? <a href="' + url_for('.login_view') + '">Click here to log in.</a></p>'
@@ -142,29 +154,52 @@ class MyAdminIndexView(admin.AdminIndexView):
 def index():
     return render_template('index.html')
 
+@app.route('/questions/')
+def questions():
+    questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
+    for i in range(len(questions_list)):
+        questions_list[i]['q_user'] = User.objects(id=questions_list[i]['q_user']).first().login
+        del questions_list[i]['_id']
+    print "QUESTIONS_DICT ############################ : ", questions_list
+    #return render_template('admin/questions.html', questions_list=questions_list)
+    return redirect(url_for('admin.index'))
+
 @app.route('/main')
 def main():
     return render_template('adminLTE/index.html')
 
 
-init_login()
-admin = admin.Admin(app, 'Team Four', index_view=MyAdminIndexView(), base_template='my_master.html')
-admin.add_view(MyModelView(User, db.session))
-
-
 def build_sample_db():
-    db.drop_all()
-    db.create_all()
-    test_user = User(login="test", password=generate_password_hash("test"))
-    #test_question = Question()
-    db.session.add(test_user)
-    #db.session.add(test_question)
-    db.session.commit()
+    test_user = User(first_name='Priyanka',
+                    last_name='Bedarkar',
+                    login='psb',
+                    email='pbedarkar@cs.stonybrook.edu',
+                    password='123',
+                    status='College',
+                    org_name='Stony Brook University',
+                    interest='Computer Science')
+    test_user.save()
+    test_question = Question(q_created_at=datetime.datetime.utcnow().strftime("%Y-%m-%d"),
+                            q_upvotes=5,
+                            q_string="How to win CodeHouse?",
+                            q_tags=['CodeHouse', 'vmware'],
+                            q_user=test_user)
+
+    test_question.save()
+    test_answer = Answer(a_created_at=datetime.datetime.utcnow().strftime("%Y-%m-%d"),
+                        a_upvotes=21,
+                        a_string="Be unique",
+                        a_user=test_user,
+                        a_question=test_question)
+    test_answer.save()
     return
 
 if __name__ == '__main__':
-    app_dir = os.path.realpath(os.path.dirname(__file__))
-    database_path = os.path.join(app_dir, app.config['DATABASE_FILE'])
-    if not os.path.exists(database_path):
-        build_sample_db()
+    init_login()
+    admin = admin.Admin(app, 'Team Four', index_view=MyAdminIndexView(), base_template='my_master.html')
+    admin.add_view(MyModelView(User))
+    admin.add_view(MyModelView(Question))
+    admin.add_view(MyModelView(Answer))
+
+    #build_sample_db()
     app.run(debug=True)
