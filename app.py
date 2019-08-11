@@ -155,6 +155,10 @@ class MyAdminIndexView(admin.AdminIndexView):
         json_obj = json.loads(new_question)
         return redirect(url_for('.index'))
 
+    @expose('/search_question/<question_input>', methods=('POST', 'GET'))
+    def search_question(self, question_input):
+        return redirect(url_for('.index'))
+
 
 @app.route('/')
 def index():
@@ -164,7 +168,6 @@ def index():
 def homepage():
     return """
     <h1>Welcome to the video!</h1>
-
     <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
     """
 
@@ -184,7 +187,7 @@ def questions():
 
 @app.route('/main')
 def main():
-    return render_template('adminLTE/index.html')
+    return render_template('newtemp/index.html')
 
 
 def build_sample_db():
