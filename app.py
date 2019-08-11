@@ -184,7 +184,7 @@ def questions():
 
 @app.route('/main')
 def main():
-    return render_template('adminLTE/index.html')
+    return render_template('newtemp/index.html')
 
 
 def build_sample_db():
