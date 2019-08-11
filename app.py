@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import string
 import random
 import datetime
+import json
 
 
 app = Flask(__name__)
@@ -135,6 +136,11 @@ class MyAdminIndexView(admin.AdminIndexView):
     @expose('/logout/')
     def logout_view(self):
         login.logout_user()
+        return redirect(url_for('.index'))
+        
+    @expose('/post_question/<new_question>', methods=('POST', 'GET'))
+    def post_question(self, new_question):
+        json_obj = json.loads(new_question)
         return redirect(url_for('.index'))
 
 
