@@ -160,13 +160,25 @@ class MyAdminIndexView(admin.AdminIndexView):
 def index():
     return render_template('index.html')
 
+@app.route('/video')
+def homepage():
+    return """
+    <h1>Welcome to the video!</h1>
+
+    <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
+    """
+
+@app.route('/post')
+def postpage():
+    return render_template('post.html')
+
 @app.route('/questions/')
 def questions():
     questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
     for i in range(len(questions_list)):
         questions_list[i]['q_user'] = User.objects(id=questions_list[i]['q_user']).first().login
         del questions_list[i]['_id']
-    print "QUESTIONS_DICT ############################ : ", questions_list
+    print ("QUESTIONS_DICT ############################ : ", questions_list)
     #return render_template('admin/questions.html', questions_list=questions_list)
     return redirect(url_for('admin.index'))
 
