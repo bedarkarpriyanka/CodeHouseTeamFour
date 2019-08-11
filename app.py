@@ -50,57 +50,6 @@ class User(db.Model):
         return self.username
 
 
-class Question(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    q_created_at = db.Column(db.DateTime, datetime.datetime.utcnow)
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
-    def __unicode__(self):
-        return self.username
-
-
-class Answer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    login = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120))
-    password = db.Column(db.String(64))
-    status = db.Column(db.String(30))
-    org_name = db.Column(db.String(100))
-    interest = db.Column(db.String(100))
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
-    def __unicode__(self):
-        return self.username
 
 
 class LoginForm(form.Form):
@@ -202,9 +151,9 @@ def build_sample_db():
     db.drop_all()
     db.create_all()
     test_user = User(login="test", password=generate_password_hash("test"))
-    test_question = Question()
+    #test_question = Question()
     db.session.add(test_user)
-    db.session.add(test_question)
+    #db.session.add(test_question)
     db.session.commit()
     return
 
