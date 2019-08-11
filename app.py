@@ -19,6 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + app.config['DATABASE_FILE
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
+app.static_folder = 'static'
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -140,6 +141,10 @@ class MyAdminIndexView(admin.AdminIndexView):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/main')
+def main():
+    return render_template('adminLTE/index.html')
 
 
 init_login()
