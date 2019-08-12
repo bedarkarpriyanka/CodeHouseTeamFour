@@ -8,6 +8,7 @@ import flask_login as login
 from flask_admin import helpers, expose
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin.contrib.mongoengine import ModelView
+from bson.objectid import ObjectId
 import string
 import random
 import datetime
@@ -54,9 +55,20 @@ class User(db.Document):
 class Question(db.Document):
     q_created_at = db.StringField(required=True, max_length=10)
     q_upvotes = db.IntField(required=True)
-    q_string = db.StringField(required=True, max_length=4096)
+    q_string = db.StringField(required=True, max_length=10000)
     q_tags = db.ListField(db.StringField(max_length=300))
+    q_description = db.StringField(max_length=100000)
     q_user = db.ReferenceField(User)
+
+    @classmethod
+    def search_class(cls,keywords):
+        return cls.objects.search_text(keywords).order_by('$text_score')
+
+    meta = {
+    'allow_inheritance' : True,
+    'indexes' : [{'fields': ['$q_created_at', '$q_upvotes', '$q_string', '$q_tags', '$q_description', '$q_user'],
+            'cls': False} ]
+    }
 
 
 class Answer(db.Document):
@@ -149,53 +161,84 @@ class MyAdminIndexView(admin.AdminIndexView):
     def logout_view(self):
         login.logout_user()
         return redirect(url_for('.index'))
-        
-@app.route('/post-form', methods=['post'])
-def post_question():
-    print("in post_question")
-    question_name = request.form.get('question_name')
-    question_tag = request.form.get('question_tag')
-    question_description = request.form.get('question_description')
-    print("#######", question_name, question_tag, question_description)
-    return redirect(url_for('.index'))
-    
-@app.route('/search-form', methods=['post'])
-def search_question():
-    print("in search_form")
-    search_input = request.form.get('search_input')
-    print("#######", search_input)
-    return redirect(url_for('.index'))
+
+    @expose('/post_question/<new_question>', methods=('POST', 'GET'))
+    def post_question(self, new_question):
+        json_obj = json.loads(new_question)
+        q_created_at = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+        q_upvotes = 1
+        q_string = json_obj['name']
+        q_tags = json_obj['tag'].split(',')
+        q_description = json_obj['description']
+        q_user = User.objects(login=str(login.current_user)).first()
+
+        add_new_question = Question(q_created_at=q_created_at,
+                                    q_upvotes=q_upvotes,
+                                    q_string=q_string,
+                                    q_tags=q_tags,
+                                    q_description=q_description,
+                                    q_user=q_user)
+        add_new_question.save()
+        new_qid = Question.objects(q_string=q_string).first().id
+        return self.get_answers(new_qid)
+
+    @expose('/search_question/<question_input>', methods=('POST', 'GET'))
+    def search_question(self, question_input):
+        print("######################### question input: ", question_input)
+        question_list = Question.search_class(question_input)
+        questions_list = [ob.to_mongo().to_dict() for ob in question_list]
+        questions_list = self.helper_list_question(question_list)
+        return redirect(url_for('.index'))
+
+    def helper_list_question(self, questions_list):
+        for i in range(len(questions_list)):
+            questions_list[i]['q_user'] = User.objects(id=questions_list[i]['q_user']).first().login
+            #del questions_list[i]['_id']
+        return questions_list
+
+    def helper_list_answer(self, answer_list):
+        for i in range(len(answer_list)):
+            answer_list[i]['a_user'] = User.objects(id=answer_list[i]['a_user']).first().login
+            #del answer_list[i]['_id']
+        return answer_list
+
+    @expose('/list_questions/', methods=('POST', 'GET'))
+    def list_questions(self):
+        questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
+        questions_list = self.helper_list_question(question_list)
+        #return render_template('admin/questions.html', questions_list=questions_list)
+        return redirect(url_for('admin.index'))
+
+    @expose('/get_answers/<qid>', methods=('POST', 'GET'))
+    def get_answers(self, qid):
+        #qid = ObjectId("5d509299eb3eb7c632cd3817")
+        final_dict = {'question':[], 'answers':[]}
+        answers_list = [ob.to_mongo().to_dict() for ob in Answer.objects(a_question=ObjectId(qid)).all()]
+        answers_list = self.helper_list_answer(answers_list)
+        final_dict['answers'] = answers_list
+        question = [Question.objects(id=ObjectId(qid)).first().to_mongo().to_dict()]
+        question = self.helper_list_question(question)
+        final_dict['question']=question
+        return render_template('qna.html', this_question_info=final_dict)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/video')
-def homepage():
-    return """
-    <h1>Welcome to the video!</h1>
-
-    <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
-    """
-
-@app.route('/post')
-def postpage():
-    return render_template('blog-post.html')
-
-@app.route('/questions/')
-def questions():
-    questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
-    for i in range(len(questions_list)):
-        questions_list[i]['q_user'] = User.objects(id=questions_list[i]['q_user']).first().login
-        del questions_list[i]['_id']
-    print ("QUESTIONS_DICT ############################ : ", questions_list)
-    #return render_template('admin/questions.html', questions_list=questions_list)
-    return redirect(url_for('admin.index'))
-
 @app.route('/main')
 def main():
     return render_template('newtemp/index.html')
 
+@app.route('/video')
+def homepage():
+    return """
+    <h1>Welcome to the video!</h1>
+    <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
+    """
+
+@app.route('/blog')
+def postpage():
+    return render_template('blog.html')
 
 def build_sample_db():
     test_user = User(first_name='Priyanka',
@@ -211,6 +254,7 @@ def build_sample_db():
                             q_upvotes=5,
                             q_string="How to win CodeHouse?",
                             q_tags=['CodeHouse', 'vmware'],
+                            q_description="",
                             q_user=test_user)
 
     test_question.save()
