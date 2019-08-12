@@ -11,10 +11,10 @@
   <title>Modern Business - Start Bootstrap Template</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/modern-business.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/modern-business.css') }}" rel="stylesheet">
 
 </head>
 
@@ -100,7 +100,7 @@
       <div class="col-lg-8">
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+        <img class="img-fluid rounded" src="http://www.trailblazermagazine.net/wp-content/uploads/2018/08/TechTopics-1170x530.jpg" alt="">
 
         <hr>
 
@@ -255,8 +255,8 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 

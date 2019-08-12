@@ -170,7 +170,7 @@ def homepage():
 
 @app.route('/post')
 def postpage():
-    return render_template('post.html')
+    return render_template('blog-post.html')
 
 @app.route('/questions/')
 def questions():
