@@ -108,7 +108,6 @@ class RegistrationForm(form.Form):
             raise validators.ValidationError('Duplicate username')
 
 
-
 def init_login():
     login_manager = login.LoginManager()
     login_manager.init_app(app)
@@ -220,6 +219,20 @@ class MyAdminIndexView(admin.AdminIndexView):
         question = self.helper_list_question(question)
         final_dict['question']=question
         return render_template('qna.html', this_question_info=final_dict)
+        
+@app.route('/post-form', methods=['post'])
+def post_form():
+    question_name = request.form.get('question_name')
+    question_tag = request.form.get('question_tag')
+    question_description = request.form.get('question_description')
+    print("#####", question_name, question_tag, question_description)
+    return redirect(url_for('admin.index'))
+
+@app.route('/search-form', methods=['post'])
+def search_form():
+    search_input = request.form.get('search_input')
+    print("#####", search_input)
+    return redirect(url_for('admin.index'))
 
 @app.route('/')
 def index():
