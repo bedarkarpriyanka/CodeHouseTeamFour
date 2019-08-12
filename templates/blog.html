@@ -23,20 +23,20 @@
   <!-- Navigation -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">College Girls Who Code</a>
+      <a class="navbar-brand" href="{{ url_for('admin.main')}}">College Girls Who Code</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="{{ url_for('admin.main')}}">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="services.html">Dashboard</a>
+            <a class="nav-link" href="{{ url_for('admin.main')}}">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Q&A</a>
+            <a class="nav-link" href="{{ url_for('admin.main')}}">Q&A</a>
           </li>
           <li class="nav-item dropdown">
             <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,9 +55,9 @@
               Settings
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-              <a class="dropdown-item" href="blog-home-1.html">My Profile</a>
-              <a class="dropdown-item" href="blog-home-2.html">My Posts</a>
-              <a class="dropdown-item active" href="blog-post.html">Privacy</a>
+              <a class="dropdown-item" href="{{ url_for('admin.main')}}">My Profile</a>
+              <a class="dropdown-item" href="{{ url_for('admin.main')}}">My Posts</a>
+              <a class="dropdown-item active" href="{{ url_for('admin.main')}}">Privacy</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -65,11 +65,11 @@
               Others
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-              <a class="dropdown-item" href="full-width.html">Contact</a>
+              <a class="dropdown-item" href="{{ url_for('admin.main')}}">Contact</a>
               <!-- <a class="dropdown-item" href="sidebar.html">Sidebar Page</a> -->
-              <a class="dropdown-item" href="faq.html">FAQ</a>
+              <a class="dropdown-item" href="{{ url_for('admin.main')}}">FAQ</a>
               <a class="dropdown-item" href="404.html">Report Bugs</a>
-              <a class="dropdown-item" href="pricing.html">Log Out</a>
+              <a class="dropdown-item" href="{{ url_for('admin.main')}}">Log Out</a>
             </div>
           </li>
         </ul>
@@ -82,14 +82,14 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3"> A day in the Life @ VMWare
-      <small> - 
+      <small> -
         <a href="#">Christina Johnson</a>
       </small>
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a href="{{ url_for('admin.main')}}">Home</a>
       </li>
       <li class="breadcrumb-item active">Nina's Blog</li>
     </ol>
@@ -115,7 +115,7 @@
         <p>VMware is the global leader in virtualization solutions from the desktop to the datacenter.
 
           The company employs more than 22,000 people in 40 locations around the world, with VMware’s Irish office based in Ballincollig, Co. Cork,
-          
+
           The company currently has a number of jobs available so we spoke to Sien Legouit who told us how the team at VMware work in an energetic environment based on creativity and collaboration.</p>
 
         <hr>
@@ -137,7 +137,7 @@
         </blockquote>
 
         <p>I started my career in IT at Techdata, a distributor as an Inside Sales Executive, selling Dell Enterprise products. I had the opportunity to develop my knowledge about datacentre solutions and doing business with channel partners which helps me a lot in my current role.</p>
-       
+
         <hr>
 
         <blockquote class="blockquote">
