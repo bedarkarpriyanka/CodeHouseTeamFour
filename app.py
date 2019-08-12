@@ -162,7 +162,7 @@ class MyAdminIndexView(admin.AdminIndexView):
         login.logout_user()
         return redirect(url_for('.index'))
 
-    @expose('/post-form/')
+    @expose('/post-form/', methods=('POST', 'GET'))
     def post_form(self):
         name = request.form.get('question_name')
         tag = request.form.get('question_tag')
@@ -184,13 +184,12 @@ class MyAdminIndexView(admin.AdminIndexView):
         new_qid = Question.objects(q_string=q_string).first().id
         return self.get_answers(new_qid)
 
-    @expose('/search-form/')
+    @expose('/search-form/', methods=('POST', 'GET'))
     def search_form(self):
         question_input = request.form.get('search_input')
         question_list = Question.search_class(question_input)
         questions_list = [ob.to_mongo().to_dict() for ob in question_list]
-        questions_list = self.helper_list_question(question_list)
-        return redirect(url_for('.index'))
+        return render_template('newtemp/search_results.html', questions=questions_list)
 
     def helper_list_question(self, questions_list):
         for i in range(len(questions_list)):
@@ -208,7 +207,6 @@ class MyAdminIndexView(admin.AdminIndexView):
     def main(self):
         questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
         questions_list = self.helper_list_question(questions_list)
-        #return render_template('admin/questions.html', questions_list=questions_list)
         return render_template('newtemp/index.html', questions=questions_list)
 
     @expose('/get_answers/<qid>', methods=('POST', 'GET'))
