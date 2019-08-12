@@ -167,10 +167,15 @@ class MyAdminIndexView(admin.AdminIndexView):
         name = request.form.get('question_name')
         tag = request.form.get('question_tag')
         description = request.form.get('question_description')
+        valid_tags=['academic', 'industry', 'admission', 'women in tech', 'internship' ]
+        try:
+            tag = valid_tags[int(tag) - 1]
+        except:
+            tag = valid_tags[1]
         q_created_at = datetime.datetime.utcnow().strftime("%Y-%m-%d")
         q_upvotes = 1
         q_string = name
-        q_tags = tag
+        q_tags = [tag]
         q_description = description
         q_user = User.objects(login=str(login.current_user)).first()
 
