@@ -184,7 +184,7 @@ class MyAdminIndexView(admin.AdminIndexView):
 
     @expose('/search_question/<question_input>', methods=('POST', 'GET'))
     def search_question(self, question_input):
-        print "######################### question input: ", question_input
+        print("######################### question input: ", question_input)
         question_list = Question.search_class(question_input)
         questions_list = [ob.to_mongo().to_dict() for ob in question_list]
         questions_list = self.helper_list_question(question_list)
@@ -236,9 +236,9 @@ def homepage():
     <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
     """
 
-@app.route('/post')
+@app.route('/blog')
 def postpage():
-    return render_template('blog-post.html')
+    return render_template('blog.html')
 
 def build_sample_db():
     test_user = User(first_name='Priyanka',
