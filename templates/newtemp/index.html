@@ -137,13 +137,16 @@
         <div class="card h-100">
           <h4 class="card-header">Trending Topics</h4>
           <div class="card-body">
-            <p class="card-text"><a href="#">Why there is less presense of young women in Engineering?</a><br>
-            <br> <a href="#">Why is a pay gap between women and men? </a><br>
-            <br> <a href="#">What is a typical day of life for software engineers?</a><br>
-            <br> <a href="#">What is the moment when you releaze you want to major in computer science? </a><br>
-            <br> <a href="#">My experience at VMWare codehouse </a><br>
-            <br> <a href="#">Top scholarships to apply for female computer science students </a><br>
-			</p>
+            <ol>
+              {% for qt in questions %}
+              {% if loop.index <= 5 %}
+              <tr><td><li>
+                  <a href="{{ url_for('admin.get_answers', qid=qt._id) }}">
+              <p class="card-text"> {{qt.q_string}} </p></br></a>
+              </li></td></tr>
+              {% endif %}
+              {% endfor %}
+            </ol>
           </div>
           <div class="card-footer">
             <a href="#" class="btn btn-primary">Learn More</a>
@@ -154,13 +157,16 @@
         <div class="card h-100">
           <h4 class="card-header">Recommend Topics</h4>
           <div class="card-body">
-            <p class="card-text"><a href="#">A day in life @VMWare</a><br>
-            <br><a href="#">How to ask your intern mentors for help?</a><br>
-            <br><a href="#">What classes should I take if I interested in computer networks?</a><br>
-            <br><a href="#">What non-techinical skills do you think is the most important to prepare for a job in tech industry?</a><br>
-            <br><a href="#">Which online classes should I take if I am interested in pattern recognization? </a><br>
-            <br><a href="#">My summer codehouse experience at VMWare </a><br>
-			</p>
+            <ol>
+              {% for qt in questions %}
+              {% if loop.index > 5 %}
+              <tr><td><li>
+                  <a href="{{ url_for('admin.get_answers', qid=qt._id) }}">
+              <p class="card-text"> {{qt.q_string}} </p></br></a>
+              </li></td></tr>
+              {% endif %}
+              {% endfor %}
+            </ol>
           </div>
           <div class="card-footer">
             <a href="#" class="btn btn-primary">Learn More</a>
@@ -176,7 +182,7 @@
         <p>Inspiring videos of women scientists:</p>
         <ul>
           <li>
-            What clubs were in involved in college? 
+            What clubs were in involved in college?
           </li>
           <li>How to balance between career and family?</li>
           <li>How did you feel in love with math and scienc?</li>
@@ -191,10 +197,10 @@
     <!-- /.row -->
 
     <hr>
-  
+
 
   <!-- Button trigger modal -->
-  
+
     <!-- Call to Action Section -->
       <div class="col-md-8" style="padding: 20px; ">
         <h3> Do not have your question? Please Ask now! </h3>
@@ -204,8 +210,8 @@
         Post a question
       </button>
       </div>
-  
-  
+
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -226,7 +232,7 @@
               <option value="2">Industry</option>
               <option value="3">Admission</option>
               <option value="4">Women in Tech</option>
-              <option value="5">Internship experience</option>       
+              <option value="5">Internship experience</option>
           </select>
         </div>
               <div>
