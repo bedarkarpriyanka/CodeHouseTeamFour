@@ -87,14 +87,12 @@
   </header>
 
   <!-- Page Content -->
-  <div class="container">
+  <div class="container" style="padding:20px">
     <p></p><p></p>
 	  <p></p><p></p>
 	  <form method="post" action="search-form">
-  			  <input id="search_input" name="search_input" type="text" class="form-control">
-  			  <span class="input-group-btn">
-  				  <button id="search_btn" type="submit" class="btn btn-primary">Search Questions</button>
-  			  </span>
+  			  <input id="search_input" name="search_input" type="text" class="form-control" style="width: 80%; display:inline">
+  				  <button id="search_btn" type="submit" class="btn btn-primary" style="width:19%;">Search Questions</button>
 	  </form>
 
     <h1 class="my-4">College Girls Who Code</h1>
@@ -136,8 +134,8 @@
     <!-- /.row -->
 
     <!-- Features Section -->
-    <div class="row">
-      <div class="col-lg-6">
+    <div class="row" style="padding: 50px">
+      <div class="col-lg-6" style="padding: 50px">
         <h2>Videos on Women in STEM</h2>
         <p>Inspiring videos of women scientists:</p>
         <ul>
@@ -150,8 +148,8 @@
         </ul>
         <p>We asked the community constantly of what they are interested in the STEM community.</p>
       </div>
-      <div class="col-lg-6">
-        <iframe src="https://www.youtube.com/embed/BIvezCVcsYs" width="600" height="400" frameborder="0" allowfullscreen></iframe>
+      <div class="col-lg-6" style="float:right">
+        <iframe src="https://www.youtube.com/embed/BIvezCVcsYs" width="540" height="400" frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
     <!-- /.row -->
@@ -161,21 +159,15 @@
 
   <!-- Button trigger modal -->
   
-
     <!-- Call to Action Section -->
-	<p></p>
-	<p></p>	<p></p>
-	<p></p>
-      <div class="col-md-6">
-        <h2> Do not have your question? <h2> 
-          <h2><br>Please Ask now! <br></h2>
+      <div class="col-md-8" style="padding: 20px; ">
+        <h3> Do not have your question? Please Ask now! </h3>
       </div>
-      <div class="col-md-6">
-      <button type="button" class="btn btn-primary btn-lg " data-toggle="modal" data-target="#exampleModalLong" style="width:110%"; height: 300px;>
+      <div class="col-md-4"style="padding: 20px;">
+      <button type="button" class="btn btn-primary btn-lg " data-toggle="modal" data-target="#exampleModalLong" style="width:105%">
         Post a question
       </button>
       </div>
-
   
   
   <!-- Modal -->
@@ -217,6 +209,13 @@
 
   </div>
   <!-- /.container -->
+
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; CodeHouse</p>
+    </div>
+    <!-- /.container -->
+  </footer>
 
   <!-- Bootstrap core JavaScript -->
   <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
