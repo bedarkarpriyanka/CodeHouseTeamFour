@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Modern Business - Start Bootstrap Template</title>
+  <title>Women in STEM</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -23,7 +23,7 @@
   <!-- Navigation -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+      <a class="navbar-brand" href="{{url_for('admin.main')}}">Women in STEM</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -82,18 +82,18 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">Question: {{this_question_info.question[0].q_string}}
+
     </h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="index.html">Home</a>
       </li>
-      <li class="breadcrumb-item active">This Post</li>
+      <li class="breadcrumb-item active">Blog Post</li>
     </ol>
-  
-    <img class="img-fluid rounded" src="https://viterbicareers.usc.edu/wp-content/uploads/2018/04/00_VMwareVM%EC%9B%A8%EC%96%B4_%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9_%EC%84%A4%EC%A0%95port_forwarding.png" alt="">
-    
+
     <div class="row">
+
       <!-- Post Content Column -->
       <div class="col-lg-8">
 
@@ -119,21 +119,12 @@
             {% for ans in this_question_info.answers %}
                 <blockquote class="blockquote">
                         <p class="mb-0">
-                              <!-- Answer - {{loop.index}}</br> -->
-
-                              <!-- Single Comment -->
-                              <div class="media mb-3">
-                                  <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/user7-128x128.jpg') }}" alt="">
-                                  <div class="media-body">
-                                    <h5 class="mt-0">{{ans.a_user}}</h5>
-                                    {{ans.a_string}}
-                                  </div>
-                                </div>
-
-                              
+                              Answer - {{loop.index}}</br>
+                              {{ans.a_string}}
                         </p>
                         <footer class="blockquote-footer">
-                                Posted on {{ans.a_created_at}}</br>
+                                Posted on {{ans.a_created_at}},
+                                Posted by {{ans.a_user}}</br>
                         </footer>
                       </blockquote>
 
