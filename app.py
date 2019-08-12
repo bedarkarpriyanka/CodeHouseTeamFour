@@ -108,6 +108,7 @@ class RegistrationForm(form.Form):
             raise validators.ValidationError('Duplicate username')
 
 
+
 def init_login():
     login_manager = login.LoginManager()
     login_manager.init_app(app)
@@ -161,14 +162,16 @@ class MyAdminIndexView(admin.AdminIndexView):
         login.logout_user()
         return redirect(url_for('.index'))
 
-    @expose('/post_question/<new_question>', methods=('POST', 'GET'))
-    def post_question(self, new_question):
-        json_obj = json.loads(new_question)
+    @expose('/post-form/')
+    def post_form(self):
+        name = request.form.get('question_name')
+        tag = request.form.get('question_tag')
+        description = request.form.get('question_description')
         q_created_at = datetime.datetime.utcnow().strftime("%Y-%m-%d")
         q_upvotes = 1
-        q_string = json_obj['name']
-        q_tags = json_obj['tag'].split(',')
-        q_description = json_obj['description']
+        q_string = name
+        q_tags = tag
+        q_description = description
         q_user = User.objects(login=str(login.current_user)).first()
 
         add_new_question = Question(q_created_at=q_created_at,
@@ -181,9 +184,9 @@ class MyAdminIndexView(admin.AdminIndexView):
         new_qid = Question.objects(q_string=q_string).first().id
         return self.get_answers(new_qid)
 
-    @expose('/search_question/<question_input>', methods=('POST', 'GET'))
-    def search_question(self, question_input):
-        print("######################### question input: ", question_input)
+    @expose('/search-form/')
+    def search_form(self):
+        question_input = request.form.get('search_input')
         question_list = Question.search_class(question_input)
         questions_list = [ob.to_mongo().to_dict() for ob in question_list]
         questions_list = self.helper_list_question(question_list)
@@ -201,12 +204,12 @@ class MyAdminIndexView(admin.AdminIndexView):
             #del answer_list[i]['_id']
         return answer_list
 
-    @expose('/list_questions/', methods=('POST', 'GET'))
-    def list_questions(self):
+    @expose('/main/', methods=('POST', 'GET'))
+    def main(self):
         questions_list = [ob.to_mongo().to_dict() for ob in Question.objects.all()]
-        questions_list = self.helper_list_question(question_list)
+        questions_list = self.helper_list_question(questions_list)
         #return render_template('admin/questions.html', questions_list=questions_list)
-        return redirect(url_for('admin.index'))
+        return render_template('newtemp/index.html', questions=questions_list)
 
     @expose('/get_answers/<qid>', methods=('POST', 'GET'))
     def get_answers(self, qid):
@@ -219,28 +222,11 @@ class MyAdminIndexView(admin.AdminIndexView):
         question = self.helper_list_question(question)
         final_dict['question']=question
         return render_template('qna.html', this_question_info=final_dict)
-        
-@app.route('/post-form', methods=['post'])
-def post_form():
-    question_name = request.form.get('question_name')
-    question_tag = request.form.get('question_tag')
-    question_description = request.form.get('question_description')
-    print("#####", question_name, question_tag, question_description)
-    return redirect(url_for('admin.index'))
-
-@app.route('/search-form', methods=['post'])
-def search_form():
-    search_input = request.form.get('search_input')
-    print("#####", search_input)
-    return redirect(url_for('admin.index'))
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/main')
-def main():
-    return render_template('newtemp/index.html')
 
 @app.route('/video')
 def homepage():
@@ -249,9 +235,9 @@ def homepage():
     <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
     """
 
-@app.route('/blog')
+@app.route('/post')
 def postpage():
-    return render_template('blog.html')
+    return render_template('blog-post.html')
 
 def build_sample_db():
     test_user = User(first_name='Priyanka',
