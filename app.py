@@ -150,11 +150,21 @@ class MyAdminIndexView(admin.AdminIndexView):
         login.logout_user()
         return redirect(url_for('.index'))
         
-    @expose('/post_question/<new_question>', methods=('POST', 'GET'))
-    def post_question(self, new_question):
-        json_obj = json.loads(new_question)
-        return redirect(url_for('.index'))
-
+@app.route('/post-form', methods=['post'])
+def post_question():
+    print("in post_question")
+    question_name = request.form.get('question_name')
+    question_tag = request.form.get('question_tag')
+    question_description = request.form.get('question_description')
+    print("#######", question_name, question_tag, question_description)
+    return redirect(url_for('.index'))
+    
+@app.route('/search-form', methods=['post'])
+def search_question():
+    print("in search_form")
+    search_input = request.form.get('search_input')
+    print("#######", search_input)
+    return redirect(url_for('.index'))
 
 @app.route('/')
 def index():
