@@ -156,7 +156,9 @@
   
 
     <!-- Call to Action Section -->
-    <div class="row mb-4">
+	<p></p>
+	<p></p>	<p></p>
+	<p></p>
       <div class="col-md-8">
         <p> Do not have your question? Please Ask now! </p>
       </div>
@@ -165,7 +167,7 @@
         Post a question
       </button>
       </div>
-    </div>
+
   
   
   <!-- Modal -->
@@ -232,8 +234,8 @@
               type: "POST",
               url: 'admin/post_question/' + json,
               complete : function(data) {
-          alert(json);
-          }
+				  alert(json);
+          	}
           });
     })
 
