@@ -226,6 +226,10 @@ class MyAdminIndexView(admin.AdminIndexView):
         final_dict['question']=question
         return render_template('qna.html', this_question_info=final_dict)
 
+    @expose('/post/', methods=('POST', 'GET'))
+    def postpage(self):
+        return render_template('newtemp/blog.html')
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -237,10 +241,6 @@ def homepage():
     <h1>Welcome to the video!</h1>
     <iframe src="https://www.youtube.com/embed/YQHsXMglC9A" width="853" height="480" frameborder="0" allowfullscreen></iframe>
     """
-
-@app.route('/post')
-def postpage():
-    return render_template('blog-post.html')
 
 def build_sample_db():
     test_user = User(first_name='Priyanka',

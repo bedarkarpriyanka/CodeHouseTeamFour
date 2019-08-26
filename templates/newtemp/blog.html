@@ -33,7 +33,7 @@
             <a class="nav-link" href="{{ url_for('admin.main')}}">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('admin.main')}}">Dashboard</a>
+            <a class="nav-link" href="{{ url_for('admin.postpage')}}">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('admin.main')}}">Q&A</a>
@@ -69,7 +69,7 @@
               <!-- <a class="dropdown-item" href="sidebar.html">Sidebar Page</a> -->
               <a class="dropdown-item" href="{{ url_for('admin.main')}}">FAQ</a>
               <a class="dropdown-item" href="404.html">Report Bugs</a>
-              <a class="dropdown-item" href="{{ url_for('admin.main')}}">Log Out</a>
+              <a class="dropdown-item" href="{{ url_for('admin.logout_view')}}">Log Out</a>
             </div>
           </li>
         </ul>
@@ -164,7 +164,7 @@
 
         <!-- Single Comment -->
         <div class="media mb-3">
-          <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/user7-128x128.jpg') }}" alt="">
+          <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/girl.png') }}" alt="">
           <div class="media-body">
             <h5 class="mt-0">Terial Bellare</h5>
             Awesome! Hope I could get an offer this fall!
@@ -173,13 +173,13 @@
 
         <!-- Comment with nested comments -->
         <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/user3-128x128.jpg') }}" alt="">
+          <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/girl.png') }}" alt="">
           <div class="media-body">
             <h5 class="mt-0">Jennifer Lambert</h5>
             What advice would you give somebody applying for a job with VMware?
 
             <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/user5-128x128.jpg') }}" alt="">
+              <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/girl.png') }}" alt="">
               <div class="media-body">
                 <h5 class="mt-0">Christina Johnson</h5>
                 Go for it, VMware is one of the most cutting-edge IT companies in the world. I never do “cold calling” because customers already know VMware and the quality of the products, personally I cannot understand why anyone would not work for VMware!
@@ -187,7 +187,7 @@
             </div>
 
             <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/user3-128x128.jpg') }}" alt="">
+              <img class="d-flex mr-3 rounded-circle" style="height:60px;width:60px;" src="{{ url_for('static', filename='img/girl.png') }}" alt="">
               <div class="media-body">
                 <h5 class="mt-0">Jennifer Lambert</h5>
                 That's cool! thanks again!
@@ -255,8 +255,7 @@
           <h5 class="card-header">My Album</h5>
           <div class="card-body">
             <!-- You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers! -->
-            <img class="img-fluid rounded" src="https://www.jobs.ie/job-talk/wp-content/uploads/VMware-blog-300x-300.jpg" alt="">
-            <!-- <img class="img-fluid rounded" src="https://media.glassdoor.com/l/da/05/ff/9a/vmware-kalyani-vista-building.jpg" alt=""> -->
+            <img class="img-fluid rounded" src="{{ url_for('static', filename='img/woman-avatar.png') }}" alt="">
           </div>
         </div>
 
