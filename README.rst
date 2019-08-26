@@ -21,3 +21,7 @@ To run:
 5. Run the application::
 
      python app.py
+
+
+
+Please find the references to the blogs, contents, templates, images, icons used for this project at https://github.com/bedarkarpriyanka/CodeHouseTeamFour/blob/master/References.md
