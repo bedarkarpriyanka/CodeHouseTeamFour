@@ -18,7 +18,7 @@ To run:
 
      pip install -r requirements.txt
 
-5. Run the application::
+5. Run the application locally::
 
      python app.py
 
