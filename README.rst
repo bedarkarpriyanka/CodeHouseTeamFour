@@ -23,12 +23,10 @@ To run:
      python app.py
 
 
-
-References::
-Some of the dummy blog data has been scraped from the internet as available on www.google.com
+<h3> References: </h3>
+Some of the dummy blog data has been scraped from the internet as available on www.google.com <br>
 Following are few of the links.
-
-Blogs::
+<h3> Blogs: </h3>
 https://www.jobs.ie/job-talk/a-day-in-the-life-vmware/
 https://girlscandostem.weebly.com/why-girls-can.html
 https://en.wikipedia.org/wiki/Gender_pay_gap
@@ -44,17 +42,14 @@ https://www.fastcompany.com/90391477/this-is-what-to-say-and-what-not-to-say-dur
 https://www.careerbuilder.com/advice/the-nontech-skills-needed-to-succeed-in-it
 https://www.wiley.com/network/professionals/career-advice/how-to-mentor-interns-to-success
 https://www.youtube.com/embed/YQHsXMglC9A
-
-Templates::
+<h3> Templates: </h3>
 https://github.com/BlackrockDigital
-
-Images::
+<h3> Images: </h3>
 https://presspage-production-content.s3.amazonaws.com/uploads/1441/tumblr-nsd90pavvx1traalfo1-1280.jpg?10000
 https://crosstalk.cell.com/hs-fs/hubfs/Images/Sheila%20Chari/7%20strategies%20from%20the%20NYSCF%20for%20advancing%20women%20in%20STEM/women-stem-featured.jpg?width=1000&name=women-stem-featured.jpg
 https://www.energy.gov/sites/prod/files/styles/borealis_article_hero_respondmedium/public/womens-day-banner-v2-title-brand.jpg.jpeg?itok=E5PMWE6j
 http://www.trailblazermagazine.net/wp-content/uploads/2018/08/TechTopics-1170x530.jpg
 https://www.jobs.ie/job-talk/wp-content/uploads/VMware-header.jpg
 https://www.jobs.ie/job-talk/wp-content/uploads/VMware-blog-300x-300.jpg
-
-Icons::
+<h3> Icons: </h3>
 Icon made by https://www.flaticon.com/authors/freepik from www.flaticon.com
